@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import ImageUpload from '@/app/components/ImageUpload'
 
 export default function LdkBaru() {
   const [name, setName] = useState('')
@@ -52,6 +53,9 @@ export default function LdkBaru() {
         <label>Slug
           <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} required style={{ width: '100%', padding: 8 }} />
         </label>
+        <label>Logo
+          <ImageUpload value={logoUrl} onChange={setLogoUrl} folder="ldk" />
+        </label>
         <label>Kampus
           <input type="text" value={campus} onChange={(e) => setCampus(e.target.value)} style={{ width: '100%', padding: 8 }} />
         </label>
@@ -60,9 +64,6 @@ export default function LdkBaru() {
         </label>
         <label>Deskripsi
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} style={{ width: '100%', padding: 8 }} />
-        </label>
-        <label>Logo URL
-          <input type="text" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} style={{ width: '100%', padding: 8 }} />
         </label>
         <label>Instagram URL
           <input type="text" value={instagramUrl} onChange={(e) => setInstagramUrl(e.target.value)} style={{ width: '100%', padding: 8 }} />

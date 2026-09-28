@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter, useParams } from 'next/navigation'
+import ImageUpload from '@/app/components/ImageUpload'
 
 export default function EditEvent() {
   const params = useParams()
@@ -16,6 +17,7 @@ export default function EditEvent() {
   const [location, setLocation] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [coverImage, setCoverImage] = useState('')
   const [published, setPublished] = useState(false)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -36,6 +38,7 @@ export default function EditEvent() {
       setLocation(data.location || '')
       setStartDate(data.start_date ? data.start_date.slice(0, 16) : '')
       setEndDate(data.end_date ? data.end_date.slice(0, 16) : '')
+      setCoverImage(data.cover_image || '')
       setPublished(data.published)
       setLoading(false)
     }
@@ -44,13 +47,13 @@ export default function EditEvent() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSaving(true)
-    setMessage('')
+    setSaving(true); setMessage('')
 
     const { error } = await supabase.from('events').update({
       title, slug, description, content, location,
       start_date: startDate || null,
       end_date: endDate || null,
+      cover_image: coverImage,
       published,
     }).eq('id', id)
 
@@ -77,6 +80,9 @@ export default function EditEvent() {
         </label>
         <label>Slug
           <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} required style={{ width: '100%', padding: 8 }} />
+        </label>
+        <label>Cover Image
+          <ImageUpload value={coverImage} onChange={setCoverImage} folder="event" />
         </label>
         <label>Deskripsi
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} style={{ width: '100%', padding: 8 }} />

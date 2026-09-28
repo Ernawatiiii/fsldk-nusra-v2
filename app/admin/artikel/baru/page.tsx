@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import ImageUpload from '@/app/components/ImageUpload'
 
 export default function ArtikelBaru() {
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [excerpt, setExcerpt] = useState('')
   const [content, setContent] = useState('')
+  const [coverImage, setCoverImage] = useState('')
   const [published, setPublished] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -36,6 +38,7 @@ export default function ArtikelBaru() {
       slug,
       excerpt,
       content,
+      cover_image: coverImage,
       published,
     })
 
@@ -73,6 +76,11 @@ export default function ArtikelBaru() {
             required
             style={{ width: '100%', padding: 8, fontSize: 16 }}
           />
+        </label>
+
+        <label>
+          Cover Image
+          <ImageUpload value={coverImage} onChange={setCoverImage} folder="artikel" />
         </label>
 
         <label>

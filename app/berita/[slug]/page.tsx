@@ -21,20 +21,26 @@ export default async function ArtikelDetail({
   if (!article) notFound()
 
   return (
-    <main style={{ padding: 40, fontFamily: 'sans-serif', maxWidth: 700, margin: '0 auto' }}>
-      <Link href="/berita">← Balik ke daftar berita</Link>
+    <main className="max-w-3xl mx-auto px-4 py-12">
+      <Link href="/berita" className="text-emerald-700 hover:underline">← Balik ke berita</Link>
 
-      <h1 style={{ marginTop: 24 }}>{article.title}</h1>
+      {article.cover_image && (
+        <img
+          src={article.cover_image}
+          alt={article.title}
+          className="w-full h-64 object-cover rounded-lg mt-6"
+        />
+      )}
 
-      <p style={{ color: '#666' }}>
+      <h1 className="text-3xl font-bold mt-6 mb-2">{article.title}</h1>
+
+      <p className="text-sm text-gray-500 mb-8">
         {new Date(article.created_at).toLocaleDateString('id-ID', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
+          day: 'numeric', month: 'long', year: 'numeric',
         })}
       </p>
 
-      <div style={{ marginTop: 24, lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
+      <div className="prose max-w-none leading-relaxed whitespace-pre-wrap">
         {article.content}
       </div>
     </main>

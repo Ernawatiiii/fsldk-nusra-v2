@@ -7,7 +7,7 @@ export default async function Home() {
   const [articlesRes, eventsRes, ldksRes] = await Promise.all([
     supabase.from('articles').select('*').eq('published', true).order('created_at', { ascending: false }).limit(3),
     supabase.from('events').select('*').eq('published', true).order('start_date', { ascending: false }).limit(3),
-    supabase.from('ldk').select('*').eq('active', true).order('name'),
+    supabase.from('ldk').select('*').eq('active', true),
   ])
 
   const articles = articlesRes.data || []
@@ -15,59 +15,96 @@ export default async function Home() {
   const ldks = ldksRes.data || []
 
   return (
-    <main style={{ padding: 40, fontFamily: 'sans-serif', maxWidth: 1000, margin: '0 auto' }}>
-      <header style={{ marginBottom: 40 }}>
-        <h1 style={{ fontSize: 32 }}>FSLDK Nusa Tenggara</h1>
-        <p style={{ color: '#666', fontSize: 18 }}>
+    <main className="max-w-6xl mx-auto px-4 py-12">
+      <header className="mb-12">
+        <h1 className="text-4xl font-bold mb-4">FSLDK Nusa Tenggara</h1>
+        <p className="text-xl text-gray-600 mb-6">
           Merajut silaturahmi, menguatkan dakwah kampus se-Nusa Tenggara.
         </p>
-        <div style={{ display: 'flex', gap: 16, marginTop: 16 }}>
-          <Link href="/berita">Berita</Link>
-          <Link href="/agenda">Agenda</Link>
-          <Link href="/ldk">Direktori LDK</Link>
+        <div className="flex gap-4">
+          <Link href="/berita" className="text-emerald-700 hover:underline">Berita</Link>
+          <Link href="/agenda" className="text-emerald-700 hover:underline">Agenda</Link>
+          <Link href="/ldk" className="text-emerald-700 hover:underline">Direktori LDK</Link>
         </div>
       </header>
 
-      <section style={{ display: 'flex', gap: 24, marginBottom: 40 }}>
-        <div><strong style={{ fontSize: 28 }}>{ldks.length}</strong><br />LDK Anggota</div>
-        <div><strong style={{ fontSize: 28 }}>{articles.length}</strong><br />Artikel</div>
-        <div><strong style={{ fontSize: 28 }}>{events.length}</strong><br />Agenda</div>
+      <section className="grid grid-cols-3 gap-6 mb-12">
+        <div className="bg-emerald-50 rounded-lg p-6 text-center">
+          <div className="text-3xl font-bold text-emerald-700">{ldks.length}</div>
+          <div className="text-gray-600 text-sm">LDK Anggota</div>
+        </div>
+        <div className="bg-emerald-50 rounded-lg p-6 text-center">
+          <div className="text-3xl font-bold text-emerald-700">{articles.length}</div>
+          <div className="text-gray-600 text-sm">Artikel</div>
+        </div>
+        <div className="bg-emerald-50 rounded-lg p-6 text-center">
+          <div className="text-3xl font-bold text-emerald-700">{events.length}</div>
+          <div className="text-gray-600 text-sm">Agenda</div>
+        </div>
       </section>
 
-      <section style={{ marginBottom: 40 }}>
-        <h2>Berita Terbaru</h2>
-        {articles.length === 0 && <p style={{ color: '#666' }}>Belum ada berita.</p>}
-        {articles.map((a) => (
-          <article key={a.id} style={{ borderBottom: '1px solid #eee', padding: '12px 0' }}>
-            <Link href={`/berita/${a.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <h3 style={{ margin: '0 0 4px 0' }}>{a.title}</h3>
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Berita Terbaru</h2>
+          <Link href="/berita" className="text-emerald-700 text-sm hover:underline">Lihat semua →</Link>
+        </div>
+
+        {articles.length === 0 && <p className="text-gray-500">Belum ada berita.</p>}
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {articles.map((a) => (
+            <Link key={a.id} href={`/berita/${a.slug}`} className="no-underline text-inherit">
+              <article className="border rounded-lg overflow-hidden hover:shadow-lg transition">
+                {a.cover_image ? (
+                  <img src={a.cover_image} alt={a.title} className="w-full h-40 object-cover" />
+                ) : (
+                  <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400">
+                    Tanpa Gambar
+                  </div>
+                )}
+                <div className="p-4">
+                  <h3 className="font-semibold mb-2">{a.title}</h3>
+                  <p className="text-xs text-gray-500">
+                    {new Date(a.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+              </article>
             </Link>
-            <p style={{ color: '#666', margin: 0, fontSize: 14 }}>
-              {new Date(a.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </p>
-          </article>
-        ))}
+          ))}
+        </div>
       </section>
 
-      <section style={{ marginBottom: 40 }}>
-        <h2>Agenda Terbaru</h2>
-        {events.length === 0 && <p style={{ color: '#666' }}>Belum ada agenda.</p>}
-        {events.map((e) => (
-          <article key={e.id} style={{ borderBottom: '1px solid #eee', padding: '12px 0' }}>
-            <Link href={`/agenda/${e.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <h3 style={{ margin: '0 0 4px 0' }}>{e.title}</h3>
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Agenda Terbaru</h2>
+          <Link href="/agenda" className="text-emerald-700 text-sm hover:underline">Lihat semua →</Link>
+        </div>
+
+        {events.length === 0 && <p className="text-gray-500">Belum ada agenda.</p>}
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {events.map((e) => (
+            <Link key={e.id} href={`/agenda/${e.slug}`} className="no-underline text-inherit">
+              <article className="border rounded-lg overflow-hidden hover:shadow-lg transition">
+                {e.cover_image ? (
+                  <img src={e.cover_image} alt={e.title} className="w-full h-40 object-cover" />
+                ) : (
+                  <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400">
+                    Tanpa Gambar
+                  </div>
+                )}
+                <div className="p-4">
+                  <h3 className="font-semibold mb-2">{e.title}</h3>
+                  <p className="text-xs text-gray-500">
+                    📅 {e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}
+                  </p>
+                  {e.location && <p className="text-xs text-gray-500">📍 {e.location}</p>}
+                </div>
+              </article>
             </Link>
-            <p style={{ color: '#666', margin: 0, fontSize: 14 }}>
-              📅 {e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID') : '-'}
-              {e.location && ` • 📍 ${e.location}`}
-            </p>
-          </article>
-        ))}
+          ))}
+        </div>
       </section>
-
-      <footer style={{ marginTop: 40, paddingTop: 20, borderTop: '1px solid #eee', color: '#999', fontSize: 14 }}>
-        <Link href="/login">Login Admin</Link>
-      </footer>
     </main>
   )
 }
