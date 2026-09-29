@@ -77,7 +77,24 @@ export default function AdminPage() {
             <p className="text-sm text-gray-600">Kelola direktori LDK</p>
           </div>
         </Link>
-
+        <Link href="/admin/pengurus" className="no-underline">
+  <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
+    <h3 className="font-semibold text-lg mb-1">👤 Pengurus</h3>
+    <p className="text-sm text-gray-600">Kelola struktur kepengurusan</p>
+  </div>
+  <Link href="/admin/program" className="no-underline">
+  <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
+    <h3 className="font-semibold text-lg mb-1">📋 Program</h3>
+    <p className="text-sm text-gray-600">Kelola program kerja</p>
+  </div>
+</Link>
+<Link href="/admin/galeri" className="no-underline">
+  <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
+    <h3 className="font-semibold text-lg mb-1">📸 Galeri</h3>
+    <p className="text-sm text-gray-600">Kelola dokumentasi foto</p>
+  </div>
+</Link>
+</Link>
         {isAdminUser && (
           <Link href="/admin/users" className="no-underline">
             <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer bg-emerald-50 border-emerald-300">
@@ -88,5 +105,5 @@ export default function AdminPage() {
         )}
       </div>
     </main>
-  )
+  ) 
 }

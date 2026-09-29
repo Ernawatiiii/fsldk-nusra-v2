@@ -11,6 +11,9 @@ export default function Navbar() {
           <Link href="/berita">Berita</Link>
           <Link href="/agenda">Agenda</Link>
           <Link href="/ldk">Direktori LDK</Link>
+          <Link href="/pengurus" className="hover:underline">Pengurus</Link>
+          <Link href="/program" className="hover:underline">Program</Link>
+          <Link href="/galeri" className="hover:underline">Galeri</Link>
           <Link href="/login">Admin</Link>
         </div>
       </div>
