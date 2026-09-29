@@ -41,7 +41,10 @@ export default function AdminPage() {
     <main className="max-w-4xl mx-auto px-4 py-10">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <button onClick={handleLogout} className="px-4 py-2 border rounded hover:bg-gray-50 cursor-pointer">
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 border rounded hover:bg-gray-50 cursor-pointer"
+        >
           Logout
         </button>
       </div>
@@ -50,7 +53,12 @@ export default function AdminPage() {
         <p className="text-sm text-gray-600">Login sebagai:</p>
         <p className="font-semibold">{profile?.full_name || user?.email}</p>
         <p className="text-xs text-gray-500 mt-1">
-          Role: <span className={isAdminUser ? 'text-emerald-700 font-bold' : 'text-blue-700 font-bold'}>
+          Role:{' '}
+          <span
+            className={
+              isAdminUser ? 'text-emerald-700 font-bold' : 'text-blue-700 font-bold'
+            }
+          >
             {profile?.role || 'unknown'}
           </span>
         </p>
@@ -77,24 +85,37 @@ export default function AdminPage() {
             <p className="text-sm text-gray-600">Kelola direktori LDK</p>
           </div>
         </Link>
+
         <Link href="/admin/pengurus" className="no-underline">
-  <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
-    <h3 className="font-semibold text-lg mb-1">👤 Pengurus</h3>
-    <p className="text-sm text-gray-600">Kelola struktur kepengurusan</p>
-  </div>
-  <Link href="/admin/program" className="no-underline">
-  <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
-    <h3 className="font-semibold text-lg mb-1">📋 Program</h3>
-    <p className="text-sm text-gray-600">Kelola program kerja</p>
-  </div>
-</Link>
-<Link href="/admin/galeri" className="no-underline">
-  <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
-    <h3 className="font-semibold text-lg mb-1">📸 Galeri</h3>
-    <p className="text-sm text-gray-600">Kelola dokumentasi foto</p>
-  </div>
-</Link>
-</Link>
+          <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
+            <h3 className="font-semibold text-lg mb-1">👤 Pengurus</h3>
+            <p className="text-sm text-gray-600">Kelola struktur kepengurusan</p>
+          </div>
+        </Link>
+
+        <Link href="/admin/program" className="no-underline">
+          <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
+            <h3 className="font-semibold text-lg mb-1">📋 Program</h3>
+            <p className="text-sm text-gray-600">Kelola program kerja</p>
+          </div>
+        </Link>
+
+        <Link href="/admin/galeri" className="no-underline">
+          <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer">
+            <h3 className="font-semibold text-lg mb-1">📸 Galeri</h3>
+            <p className="text-sm text-gray-600">Kelola dokumentasi foto</p>
+          </div>
+        </Link>
+
+        {/* Card Pesan Masuk */}
+        <Link href="/admin/pesan" className="no-underline">
+          <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer bg-yellow-50 border-yellow-300">
+            <h3 className="font-semibold text-lg mb-1">✉️ Pesan Masuk</h3>
+            <p className="text-sm text-gray-600">Baca & kelola pesan dari pengunjung</p>
+          </div>
+        </Link>
+
+        {/* Card Kelola Users (Khusus Admin) */}
         {isAdminUser && (
           <Link href="/admin/users" className="no-underline">
             <div className="p-6 border rounded-lg hover:shadow-lg transition cursor-pointer bg-emerald-50 border-emerald-300">
@@ -105,5 +126,5 @@ export default function AdminPage() {
         )}
       </div>
     </main>
-  ) 
+  )
 }
