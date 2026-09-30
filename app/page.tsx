@@ -15,58 +15,96 @@ export default async function Home() {
   const ldks = ldksRes.data || []
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-12">
-      <header className="mb-12">
-        <h1 className="text-4xl font-bold mb-4">FSLDK Nusa Tenggara</h1>
-        <p className="text-xl text-gray-600 mb-6">
-          Merajut silaturahmi, menguatkan dakwah kampus se-Nusa Tenggara.
-        </p>
-        <div className="flex gap-4">
-          <Link href="/berita" className="text-emerald-700 hover:underline">Berita</Link>
-          <Link href="/agenda" className="text-emerald-700 hover:underline">Agenda</Link>
-          <Link href="/ldk" className="text-emerald-700 hover:underline">Direktori LDK</Link>
-        </div>
-      </header>
+    <main>
+      {/* HERO */}
+      <section className="relative bg-nusra text-white overflow-hidden">
+        <div className="absolute inset-0 bg-pattern-nusra opacity-30" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-nusra-gold/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-nusra-lime/20 rounded-full blur-3xl" />
 
-      <section className="grid grid-cols-3 gap-6 mb-12">
-        <div className="bg-emerald-50 rounded-lg p-6 text-center">
-          <div className="text-3xl font-bold text-emerald-700">{ldks.length}</div>
-          <div className="text-gray-600 text-sm">LDK Anggota</div>
-        </div>
-        <div className="bg-emerald-50 rounded-lg p-6 text-center">
-          <div className="text-3xl font-bold text-emerald-700">{articles.length}</div>
-          <div className="text-gray-600 text-sm">Artikel</div>
-        </div>
-        <div className="bg-emerald-50 rounded-lg p-6 text-center">
-          <div className="text-3xl font-bold text-emerald-700">{events.length}</div>
-          <div className="text-gray-600 text-sm">Agenda</div>
+        <div className="relative max-w-7xl mx-auto px-6 py-24 md:py-40">
+          <div className="max-w-4xl">
+            <span className="inline-block bg-nusra-lime text-nusra-dark px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-6">
+              Forum Dakwah Kampus Nusra
+            </span>
+
+            <h1 className="font-black text-5xl md:text-8xl leading-[0.95] mb-8 uppercase">
+              Merajut <span className="text-nusra-gold">Silaturahmi</span>,<br />
+              Menguatkan Dakwah.
+            </h1>
+
+            <p className="text-xl md:text-2xl text-white/70 mb-12 max-w-2xl font-medium">
+              16 Lembaga Dakwah Kampus dari Lombok hingga Sumbawa. Satu forum. Satu gerakan.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/profil"
+                className="bg-nusra-gold text-nusra-dark px-10 py-5 rounded-full font-black uppercase tracking-wider text-sm hover:bg-nusra-lime hover:scale-105 transition-all shadow-2xl"
+              >
+                Kenali Kami
+              </Link>
+              <Link
+                href="/ldk"
+                className="border-2 border-white/30 text-white px-10 py-5 rounded-full font-black uppercase tracking-wider text-sm hover:bg-white hover:text-nusra-dark transition-all"
+              >
+                Lihat 16 LDK →
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-3 gap-8 mt-20 pt-12 border-t border-white/10">
+              <div>
+                <div className="font-black text-5xl md:text-6xl text-nusra-gold">{ldks.length}</div>
+                <div className="text-white/60 uppercase tracking-wider text-xs mt-2">LDK Anggota</div>
+              </div>
+              <div>
+                <div className="font-black text-5xl md:text-6xl text-nusra-gold">4</div>
+                <div className="text-white/60 uppercase tracking-wider text-xs mt-2">Komisi Kerja</div>
+              </div>
+              <div>
+                <div className="font-black text-5xl md:text-6xl text-nusra-gold">2</div>
+                <div className="text-white/60 uppercase tracking-wider text-xs mt-2">Badan Otonom</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Berita Terbaru</h2>
-          <Link href="/berita" className="text-emerald-700 text-sm hover:underline">Lihat semua →</Link>
+      {/* BERITA */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <p className="text-nusra-gold uppercase tracking-widest text-xs font-black mb-2">
+              Informasi Terbaru
+            </p>
+            <h2 className="font-black text-4xl md:text-5xl uppercase">Kabar dari Forum</h2>
+          </div>
+          <Link href="/berita" className="text-nusra hover:text-nusra-gold font-bold text-sm uppercase tracking-wider">
+            Lihat Semua →
+          </Link>
         </div>
 
-        {articles.length === 0 && <p className="text-gray-500">Belum ada berita.</p>}
+        {articles.length === 0 && <p className="text-nusra-muted">Belum ada berita.</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {articles.map((a) => (
-            <Link key={a.id} href={`/berita/${a.slug}`} className="no-underline text-inherit">
-              <article className="border rounded-lg overflow-hidden hover:shadow-lg transition">
+            <Link key={a.id} href={`/berita/${a.slug}`} className="no-underline text-inherit group">
+              <article className="bg-white rounded-2xl overflow-hidden border-2 border-gray-100 hover:border-nusra-gold hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
                 {a.cover_image ? (
-                  <img src={a.cover_image} alt={a.title} className="w-full h-40 object-cover" />
+                  <img src={a.cover_image} alt={a.title} className="w-full h-48 object-cover" />
                 ) : (
-                  <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400">
+                  <div className="w-full h-48 bg-nusra/5 flex items-center justify-center text-nusra/30 font-black uppercase text-xs tracking-widest">
                     Tanpa Gambar
                   </div>
                 )}
-                <div className="p-4">
-                  <h3 className="font-semibold mb-2">{a.title}</h3>
-                  <p className="text-xs text-gray-500">
+                <div className="p-6 flex-1 flex flex-col">
+                  <p className="text-xs text-nusra-muted uppercase tracking-wider mb-2">
                     {new Date(a.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                   </p>
+                  <h3 className="font-black text-lg leading-tight mb-3 group-hover:text-nusra transition">
+                    {a.title}
+                  </h3>
+                  {a.excerpt && <p className="text-sm text-nusra-muted line-clamp-3">{a.excerpt}</p>}
                 </div>
               </article>
             </Link>
@@ -74,37 +112,57 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Agenda Terbaru</h2>
-          <Link href="/agenda" className="text-emerald-700 text-sm hover:underline">Lihat semua →</Link>
-        </div>
-
-        {events.length === 0 && <p className="text-gray-500">Belum ada agenda.</p>}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {events.map((e) => (
-            <Link key={e.id} href={`/agenda/${e.slug}`} className="no-underline text-inherit">
-              <article className="border rounded-lg overflow-hidden hover:shadow-lg transition">
-                {e.cover_image ? (
-                  <img src={e.cover_image} alt={e.title} className="w-full h-40 object-cover" />
-                ) : (
-                  <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400">
-                    Tanpa Gambar
-                  </div>
-                )}
-                <div className="p-4">
-                  <h3 className="font-semibold mb-2">{e.title}</h3>
-                  <p className="text-xs text-gray-500">
-                    📅 {e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}
-                  </p>
-                  {e.location && <p className="text-xs text-gray-500">📍 {e.location}</p>}
-                </div>
-              </article>
+      {/* AGENDA */}
+      <section className="bg-nusra text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-pattern-nusra opacity-20" />
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p className="text-nusra-gold uppercase tracking-widest text-xs font-black mb-2">
+                Agenda
+              </p>
+              <h2 className="font-black text-4xl md:text-5xl uppercase">Kegiatan Mendatang</h2>
+            </div>
+            <Link href="/agenda" className="text-nusra-gold hover:text-nusra-lime font-bold text-sm uppercase tracking-wider">
+              Lihat Semua →
             </Link>
-          ))}
+          </div>
+
+          {events.length === 0 && <p className="text-white/60">Belum ada agenda.</p>}
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {events.map((e) => (
+              <Link key={e.id} href={`/agenda/${e.slug}`} className="no-underline text-inherit group">
+                <article className="bg-white/5 backdrop-blur border-2 border-white/10 hover:border-nusra-gold rounded-2xl p-6 transition-all duration-300 h-full">
+                  <p className="text-nusra-gold font-black text-sm uppercase tracking-wider mb-3">
+                    📅 {e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}
+                  </p>
+                  <h3 className="font-black text-xl leading-tight mb-3 group-hover:text-nusra-gold transition">
+                    {e.title}
+                  </h3>
+                  {e.location && <p className="text-white/60 text-sm">📍 {e.location}</p>}
+                </article>
+              </Link>
+            ))}
+          </div>
         </div>
+      </section>
+
+      {/* CTA */}
+      <section className="max-w-7xl mx-auto px-6 py-20 text-center">
+        <h2 className="font-black text-4xl md:text-6xl uppercase mb-6">
+          Siap <span className="text-nusra-gold">Kolaborasi</span>?
+        </h2>
+        <p className="text-nusra-muted text-lg mb-8 max-w-2xl mx-auto">
+          Punya pertanyaan, ide kolaborasi, atau ingin bergabung? Hubungi kami.
+        </p>
+        <Link
+          href="/profil"
+          className="inline-block bg-nusra text-white px-10 py-5 rounded-full font-black uppercase tracking-wider text-sm hover:bg-nusra-gold hover:text-nusra-dark transition-all shadow-xl"
+        >
+          Hubungi Kami
+        </Link>
       </section>
     </main>
   )
-}
+} 

@@ -27,25 +27,62 @@ export default async function ProgramDetail({
   if (!program) notFound()
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
-      <Link href="/program" className="text-emerald-700 hover:underline">← Balik ke program</Link>
-
+    <main>
       {program.cover_image && (
-        <img src={program.cover_image} alt={program.title} className="w-full h-64 object-cover rounded-lg mt-6" />
+        <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
+          <img
+            src={program.cover_image}
+            alt={program.title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-nusra-dark via-nusra-dark/60 to-transparent" />
+        </section>
       )}
 
-      <div className="mt-6 mb-2 text-sm text-gray-500">
-        {statusLabel[program.status] || program.status}
-        {program.period && ` • ${program.period}`}
-      </div>
+      <article className={`max-w-3xl mx-auto px-6 ${program.cover_image ? '-mt-32 relative z-10' : 'py-16'}`}>
+        <Link
+          href="/program"
+          className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-nusra-gold hover:text-nusra-lime transition mb-6"
+        >
+          ← Program
+        </Link>
 
-      <h1 className="text-3xl font-bold mb-6">{program.title}</h1>
+        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl">
+          <div className="flex flex-wrap gap-3 mb-6">
+            <span className="inline-flex items-center bg-nusra-lime text-nusra-dark px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+              {statusLabel[program.status] || program.status}
+            </span>
+            {program.period && (
+              <span className="inline-flex items-center bg-nusra/10 text-nusra px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+                {program.period}
+              </span>
+            )}
+          </div>
 
-      {program.description && (
-        <p className="italic text-gray-700 mb-6">{program.description}</p>
-      )}
+          <h1 className="font-black text-3xl md:text-5xl leading-[1.05] uppercase mb-8">
+            {program.title}
+          </h1>
 
-      <div className="leading-relaxed whitespace-pre-wrap">{program.content}</div>
+          {program.description && (
+            <p className="text-lg md:text-xl text-nusra-muted italic mb-8 border-l-4 border-nusra-gold pl-6">
+              {program.description}
+            </p>
+          )}
+
+          <div className="leading-relaxed text-nusra-ink/80 whitespace-pre-wrap text-lg">
+            {program.content}
+          </div>
+        </div>
+      </article>
+
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <Link
+          href="/program"
+          className="inline-block bg-nusra text-white px-8 py-4 rounded-full font-black uppercase tracking-wider text-sm hover:bg-nusra-gold hover:text-nusra-dark transition-all"
+        >
+          ← Balik ke Program
+        </Link>
+      </section>
     </main>
   )
 }
