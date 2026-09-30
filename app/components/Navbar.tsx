@@ -16,7 +16,7 @@ export default function Navbar() {
           <Link href="/pengurus" className="hover:underline">Pengurus</Link>
           <Link href="/galeri" className="hover:underline">Galeri</Link>
           <Link href="/medsos" className="hover:underline">Medsos</Link>
-          <Link href="/login" className="hover:underline">Admin</Link>
+          <Link href="/admin" className="hover:underline">Admin</Link>
         </div>
       </div>
     </nav>
