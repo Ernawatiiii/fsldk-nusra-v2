@@ -1,9 +1,12 @@
 import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import ShareButton from '@/app/components/ShareButton'
 import { HiOutlineCalendar, HiOutlineLocationMarker } from 'react-icons/hi'
 
 export const revalidate = 60
+
+const BASE_URL = 'https://fsldk-nusra-v2.vercel.app'
 
 export default async function EventDetail({
   params,
@@ -70,6 +73,13 @@ export default async function EventDetail({
 
           <div className="leading-relaxed text-nusra-ink/80 whitespace-pre-wrap text-lg">
             {event.content}
+          </div>
+
+          <div className="mt-8">
+            <ShareButton
+              url={`${BASE_URL}/agenda/${event.slug}`}
+              title={event.title}
+            />
           </div>
         </div>
       </article>

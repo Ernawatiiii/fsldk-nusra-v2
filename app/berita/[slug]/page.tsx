@@ -1,8 +1,11 @@
 import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import ShareButton from '@/app/components/ShareButton'
 
 export const revalidate = 60
+
+const BASE_URL = 'https://fsldk-nusra-v2.vercel.app'
 
 export default async function ArtikelDetail({
   params,
@@ -62,6 +65,13 @@ export default async function ArtikelDetail({
 
           <div className="leading-relaxed text-nusra-ink/80 whitespace-pre-wrap text-lg">
             {article.content}
+          </div>
+
+          <div className="mt-8">
+            <ShareButton
+              url={`${BASE_URL}/berita/${article.slug}`}
+              title={article.title}
+            />
           </div>
         </div>
       </article>
