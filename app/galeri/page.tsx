@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
+
+export const metadata: Metadata = {
+  title: 'Galeri',
+  description: 'Dokumentasi kegiatan FSLDK Nusa Tenggara',
+}
 
 export const revalidate = 60
 

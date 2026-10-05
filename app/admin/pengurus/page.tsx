@@ -21,45 +21,46 @@ export default function PengurusList() {
     load()
   }, [router])
 
-  if (loading) return <main className="p-10">Loading...</main>
+  if (loading) return <main className="max-w-7xl mx-auto px-6 py-10"><p className="text-nusra-muted font-bold">Loading...</p></main>
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6">Kelola Pengurus</h1>
-      <Link href="/admin/pengurus/baru">
-        <button className="px-4 py-2 bg-emerald-600 text-white rounded mb-6 cursor-pointer">
+    <main className="max-w-7xl mx-auto px-6 py-10">
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <div>
+          <Link href="/admin" className="text-nusra-gold uppercase tracking-widest text-xs font-black hover:text-nusra-lime transition">← Dashboard</Link>
+          <h1 className="font-black text-4xl md:text-5xl uppercase leading-none mt-2">Pengurus</h1>
+          <p className="text-nusra-muted mt-1">{items.length} pengurus terdaftar</p>
+        </div>
+        <Link href="/admin/pengurus/baru" className="bg-nusra text-white px-6 py-3 rounded-full font-black uppercase tracking-wider text-xs hover:bg-nusra-gold hover:text-nusra-dark transition">
           + Tambah Pengurus
-        </button>
-      </Link>
+        </Link>
+      </div>
 
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="border-b-2 border-gray-300 text-left">
-            <th className="p-2">Nama</th>
-            <th className="p-2">Jabatan</th>
-            <th className="p-2">Divisi</th>
-            <th className="p-2">Periode</th>
-            <th className="p-2">Status</th>
-            <th className="p-2">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
+      {items.length === 0 ? (
+        <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-nusra/20">
+          <p className="text-nusra-muted">Belum ada pengurus.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {items.map((p) => (
-            <tr key={p.id} className="border-b border-gray-200">
-              <td className="p-2">{p.name}</td>
-              <td className="p-2">{p.position}</td>
-              <td className="p-2">{p.division}</td>
-              <td className="p-2">{p.period}</td>
-              <td className="p-2">{p.active ? '✅' : '❌'}</td>
-              <td className="p-2"><Link href={`/admin/pengurus/${p.id}`} className="text-emerald-700">Edit</Link></td>
-            </tr>
+            <Link key={p.id} href={`/admin/pengurus/${p.id}`} className="no-underline text-inherit group">
+              <div className="bg-white rounded-2xl p-5 border-2 border-gray-100 hover:border-nusra-gold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center h-full">
+                {p.photo_url ? (
+                  <img src={p.photo_url} alt={p.name} className="w-20 h-20 rounded-full object-cover mx-auto mb-3" />
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-nusra/5 mx-auto mb-3 flex items-center justify-center text-nusra/20 text-xs font-black">FOTO</div>
+                )}
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <span className={`w-2 h-2 rounded-full ${p.active ? 'bg-emerald-500' : 'bg-gray-300'}`}></span>
+                  <h3 className="font-black text-sm truncate">{p.name}</h3>
+                </div>
+                <p className="text-nusra-gold text-xs font-bold uppercase tracking-wider truncate">{p.position}</p>
+                {p.division && <p className="text-xs text-nusra-muted mt-1 truncate">{p.division}</p>}
+              </div>
+            </Link>
           ))}
-        </tbody>
-      </table>
-
-      {items.length === 0 && <p className="text-gray-500 mt-4">Belum ada pengurus.</p>}
-
-      <Link href="/admin" className="inline-block mt-6 text-emerald-700 hover:underline">← Balik</Link>
+        </div>
+      )}
     </main>
   )
 }

@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { HiOutlineCalendar, HiOutlineLocationMarker } from 'react-icons/hi'
 
 export const revalidate = 60
 
@@ -44,13 +45,15 @@ export default async function EventDetail({
         <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl">
           <div className="flex flex-wrap gap-3 mb-6">
             <span className="inline-flex items-center gap-2 bg-nusra-lime text-nusra-dark px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
-              📅 {event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', {
+              <HiOutlineCalendar className="w-4 h-4" />
+              {event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', {
                 day: 'numeric', month: 'long', year: 'numeric',
               }) : '-'}
             </span>
             {event.location && (
               <span className="inline-flex items-center gap-2 bg-nusra/10 text-nusra px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
-                📍 {event.location}
+                <HiOutlineLocationMarker className="w-4 h-4" />
+                {event.location}
               </span>
             )}
           </div>

@@ -1,5 +1,12 @@
+import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import { HiOutlineCalendar, HiOutlineLocationMarker } from 'react-icons/hi'
+
+export const metadata: Metadata = {
+  title: 'Agenda & Kegiatan',
+  description: 'Agenda dan kegiatan FSLDK Nusa Tenggara',
+}
 
 export const revalidate = 60
 
@@ -91,15 +98,21 @@ export default async function AgendaPage({
                   </div>
                 )}
                 <div className="p-6 flex-1 flex flex-col">
-                  <p className="text-nusra-gold font-black text-xs uppercase tracking-widest mb-3">
-                    📅 {e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', {
+                  <p className="text-nusra-gold font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <HiOutlineCalendar className="w-4 h-4" />
+                    {e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', {
                       day: 'numeric', month: 'long', year: 'numeric',
                     }) : '-'}
                   </p>
                   <h3 className="font-black text-lg leading-tight mb-3 group-hover:text-nusra transition">
                     {e.title}
                   </h3>
-                  {e.location && <p className="text-sm text-nusra-muted">📍 {e.location}</p>}
+                  {e.location && (
+                  <p className="text-sm text-nusra-muted flex items-center gap-2">
+                    <HiOutlineLocationMarker className="w-4 h-4" />
+                    {e.location}
+                  </p>
+                )}
                   {e.description && <p className="text-sm text-nusra-muted line-clamp-2 mt-2">{e.description}</p>}
                 </div>
               </article>

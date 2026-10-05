@@ -1,5 +1,11 @@
+import type { Metadata } from 'next'
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa'
 import { HiOutlineMail } from 'react-icons/hi'
+
+export const metadata: Metadata = {
+  title: 'Media Sosial',
+  description: 'Kanal resmi FSLDK Nusa Tenggara',
+}
 
 const socialLinks = [
   {

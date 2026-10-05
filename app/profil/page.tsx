@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
 import ContactForm from '@/app/components/ContactForm'
+
+export const metadata: Metadata = {
+  title: 'Profil',
+  description: 'Profil, visi, misi, dan tujuan FSLDK Nusa Tenggara',
+}
 
 export default function ProfilPage() {
   return (

@@ -1,12 +1,18 @@
+import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Program Kerja',
+  description: 'Program kerja FSLDK Nusa Tenggara',
+}
 
 export const revalidate = 60
 
 const statusLabel: Record<string, string> = {
-  'akan-datang': '🕐 Akan Datang',
-  'berlangsung': '🔥 Berlangsung',
-  'selesai': '✅ Selesai',
+  'akan-datang': 'Akan Datang',
+  'berlangsung': 'Berlangsung',
+  'selesai': 'Selesai',
 }
 
 export default async function ProgramPage() {

@@ -1,5 +1,12 @@
+import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import { HiOutlineLocationMarker } from 'react-icons/hi'
+
+export const metadata: Metadata = {
+  title: 'Direktori LDK',
+  description: 'Direktori Lembaga Dakwah Kampus se-Nusa Tenggara',
+}
 
 export const revalidate = 60
 
@@ -100,10 +107,11 @@ export default async function LdkPage({
                   </h3>
                   {l.campus && <p className="text-sm text-nusra-muted truncate">{l.campus}</p>}
                   {l.city && (
-                    <p className="text-xs text-nusra-muted uppercase tracking-wider mt-2">
-                      📍 {l.city}
-                    </p>
-                  )}
+                  <p className="text-xs text-nusra-muted uppercase tracking-wider mt-2 flex items-center gap-1">
+                    <HiOutlineLocationMarker className="w-3 h-3" />
+                    {l.city}
+                  </p>
+                 )}
                 </div>
               </article>
             </Link>

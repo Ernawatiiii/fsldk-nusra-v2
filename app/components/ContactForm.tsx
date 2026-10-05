@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import StatusMessage from './StatusMessage'
 
 export default function ContactForm() {
   const [name, setName] = useState('')
@@ -21,25 +22,25 @@ export default function ContactForm() {
     })
 
     if (error) {
-      setStatus(`❌ ${error.message}`)
+      setStatus(error.message)
       setLoading(false)
       return
     }
 
-    setStatus('✅ Pesan terkirim! Kami akan segera menghubungi kamu.')
+    setStatus('Pesan terkirim! Kami akan segera menghubungi kamu.')
     setName(''); setEmail(''); setSubject(''); setMessage('')
     setLoading(false)
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-lg">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-lg">
       <input
         type="text"
         placeholder="Nama"
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
-        className="p-3 border rounded"
+        className="px-5 py-4 border-2 border-nusra/10 rounded-xl focus:border-nusra-gold focus:outline-none transition"
       />
       <input
         type="email"
@@ -47,7 +48,7 @@ export default function ContactForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="p-3 border rounded"
+        className="px-5 py-4 border-2 border-nusra/10 rounded-xl focus:border-nusra-gold focus:outline-none transition"
       />
       <input
         type="text"
@@ -55,7 +56,7 @@ export default function ContactForm() {
         value={subject}
         onChange={(e) => setSubject(e.target.value)}
         required
-        className="p-3 border rounded"
+        className="px-5 py-4 border-2 border-nusra/10 rounded-xl focus:border-nusra-gold focus:outline-none transition"
       />
       <textarea
         placeholder="Pesan"
@@ -63,16 +64,16 @@ export default function ContactForm() {
         onChange={(e) => setMessage(e.target.value)}
         required
         rows={5}
-        className="p-3 border rounded"
+        className="px-5 py-4 border-2 border-nusra/10 rounded-xl focus:border-nusra-gold focus:outline-none transition"
       />
       <button
         type="submit"
         disabled={loading}
-        className="px-4 py-3 bg-emerald-600 text-white rounded cursor-pointer hover:bg-emerald-700"
+        className="bg-nusra text-white px-8 py-4 rounded-full font-black uppercase tracking-wider text-sm hover:bg-nusra-gold hover:text-nusra-dark transition-all disabled:opacity-50 cursor-pointer"
       >
         {loading ? 'Mengirim...' : 'Kirim Pesan'}
       </button>
-      {status && <p className="text-sm">{status}</p>}
+      {status && <StatusMessage message={status} />}
     </form>
   )
 }

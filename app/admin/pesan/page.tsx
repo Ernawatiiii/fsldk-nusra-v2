@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { HiOutlineMail } from 'react-icons/hi'
 
 export default function PesanPage() {
   const [items, setItems] = useState<any[]>([])
@@ -38,72 +39,92 @@ export default function PesanPage() {
     setSelected(null)
   }
 
-  if (loading) return <main className="p-10">Loading...</main>
+  if (loading) return <main className="max-w-7xl mx-auto px-6 py-10"><p className="text-nusra-muted font-bold">Loading...</p></main>
+
+  const unread = items.filter((p) => !p.read).length
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6">Pesan Masuk</h1>
+    <main className="max-w-7xl mx-auto px-6 py-10">
+      <div className="mb-8">
+        <Link href="/admin" className="text-nusra-gold uppercase tracking-widest text-xs font-black hover:text-nusra-lime transition">← Dashboard</Link>
+        <h1 className="font-black text-4xl md:text-5xl uppercase leading-none mt-2">Pesan Masuk</h1>
+        <p className="text-nusra-muted mt-1">
+          {items.length} pesan total
+          {unread > 0 && <span className="ml-2 inline-block bg-nusra-gold text-nusra-dark px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">{unread} belum dibaca</span>}
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h2 className="text-sm font-semibold text-gray-500 mb-2">Daftar Pesan ({items.length})</h2>
-          <div className="border rounded-lg divide-y max-h-[600px] overflow-y-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* LIST */}
+        <div className="lg:col-span-2">
+          <div className="bg-white rounded-2xl border-2 border-gray-100 overflow-hidden max-h-[700px] overflow-y-auto">
+            {items.length === 0 && <p className="p-6 text-nusra-muted text-sm">Belum ada pesan.</p>}
             {items.map((p) => (
               <button
                 key={p.id}
                 onClick={() => openPesan(p)}
-                className={`w-full text-left p-3 hover:bg-gray-50 cursor-pointer ${selected?.id === p.id ? 'bg-emerald-50' : ''}`}
+                className={`w-full text-left p-5 border-b border-gray-100 hover:bg-nusra-sand/50 transition cursor-pointer ${selected?.id === p.id ? 'bg-nusra-sand border-l-4 border-l-nusra-gold' : ''}`}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  {!p.read && <span className="w-2 h-2 bg-emerald-600 rounded-full"></span>}
-                  <span className="font-semibold text-sm">{p.name}</span>
+                  {!p.read && <span className="w-2 h-2 bg-nusra-gold rounded-full flex-shrink-0"></span>}
+                  <span className="font-black text-sm truncate">{p.name}</span>
                 </div>
-                <div className="text-sm text-gray-700 truncate">{p.subject}</div>
-                <div className="text-xs text-gray-400 mt-1">
-                  {new Date(p.created_at).toLocaleDateString('id-ID', {
-                    day: 'numeric', month: 'short', year: 'numeric',
-                    hour: '2-digit', minute: '2-digit',
-                  })}
-                </div>
+                <p className="text-sm text-nusra-ink/80 truncate mb-1">{p.subject}</p>
+                <p className="text-xs text-nusra-muted">
+                  {new Date(p.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                </p>
               </button>
             ))}
-            {items.length === 0 && <p className="p-4 text-gray-500 text-sm">Belum ada pesan.</p>}
           </div>
         </div>
 
-        <div>
-          <h2 className="text-sm font-semibold text-gray-500 mb-2">Detail</h2>
-          <div className="border rounded-lg p-4 min-h-[200px]">
-            {!selected && <p className="text-gray-400 text-sm">Pilih pesan untuk dibaca.</p>}
+        {/* DETAIL */}
+        <div className="lg:col-span-3">
+          <div className="bg-white rounded-2xl border-2 border-gray-100 p-8 min-h-[400px]">
+            {!selected && (
+              <div className="text-center py-20">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-nusra/5 text-nusra/40 mb-4">
+                  <HiOutlineMail className="w-10 h-10" />
+                </div>
+                <p className="text-nusra-muted">Pilih pesan untuk dibaca</p>
+              </div>
+            )}
             {selected && (
               <div>
-                <h3 className="text-xl font-bold mb-1">{selected.subject}</h3>
-                <p className="text-sm text-gray-600 mb-1">
-                  Dari: <strong>{selected.name}</strong> &lt;{selected.email}&gt;
-                </p>
-                <p className="text-xs text-gray-400 mb-4">
-                  {new Date(selected.created_at).toLocaleString('id-ID')}
-                </p>
-                <div className="whitespace-pre-wrap leading-relaxed mb-6">{selected.message}</div>
-                <a
-                  href={`mailto:${selected.email}?subject=Re: ${selected.subject}`}
-                  className="inline-block px-4 py-2 bg-emerald-600 text-white rounded mr-2"
-                >
-                  Balas via Email
-                </a>
-                <button
-                  onClick={() => handleDelete(selected.id)}
-                  className="px-4 py-2 border rounded text-red-600 cursor-pointer"
-                >
-                  Hapus
-                </button>
+                <p className="text-nusra-gold uppercase tracking-widest text-xs font-black mb-3">Pesan</p>
+                <h2 className="font-black text-2xl md:text-3xl leading-tight mb-4">{selected.subject}</h2>
+
+                <div className="bg-nusra-sand rounded-xl p-4 mb-6">
+                  <p className="text-sm"><strong>Dari:</strong> {selected.name}</p>
+                  <p className="text-sm text-nusra-muted">{selected.email}</p>
+                  <p className="text-xs text-nusra-muted mt-2">
+                    {new Date(selected.created_at).toLocaleString('id-ID')}
+                  </p>
+                </div>
+
+                <div className="leading-relaxed whitespace-pre-wrap text-nusra-ink/80 mb-8">
+                  {selected.message}
+                </div>
+
+                <div className="flex gap-3 flex-wrap">
+                  <a
+                    href={`mailto:${selected.email}?subject=Re: ${selected.subject}`}
+                    className="bg-nusra text-white px-6 py-3 rounded-full font-black uppercase tracking-wider text-xs hover:bg-nusra-gold hover:text-nusra-dark transition"
+                  >
+                    Balas via Email
+                  </a>
+                  <button
+                    onClick={() => handleDelete(selected.id)}
+                    className="bg-red-50 text-red-600 px-6 py-3 rounded-full font-black uppercase tracking-wider text-xs hover:bg-red-100 transition cursor-pointer"
+                  >
+                    Hapus
+                  </button>
+                </div>
               </div>
             )}
           </div>
         </div>
       </div>
-
-      <Link href="/admin" className="inline-block mt-6 text-emerald-700 hover:underline">← Balik ke Dashboard</Link>
     </main>
   )
 }

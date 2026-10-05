@@ -21,37 +21,45 @@ export default function GaleriList() {
     load()
   }, [router])
 
-  if (loading) return <main className="p-10">Loading...</main>
+  if (loading) return <main className="max-w-7xl mx-auto px-6 py-10"><p className="text-nusra-muted font-bold">Loading...</p></main>
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6">Kelola Galeri</h1>
-      <Link href="/admin/galeri/baru">
-        <button className="px-4 py-2 bg-emerald-600 text-white rounded mb-6 cursor-pointer">
+    <main className="max-w-7xl mx-auto px-6 py-10">
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <div>
+          <Link href="/admin" className="text-nusra-gold uppercase tracking-widest text-xs font-black hover:text-nusra-lime transition">← Dashboard</Link>
+          <h1 className="font-black text-4xl md:text-5xl uppercase leading-none mt-2">Galeri</h1>
+          <p className="text-nusra-muted mt-1">{items.length} foto terdaftar</p>
+        </div>
+        <Link href="/admin/galeri/baru" className="bg-nusra text-white px-6 py-3 rounded-full font-black uppercase tracking-wider text-xs hover:bg-nusra-gold hover:text-nusra-dark transition">
           + Tambah Foto
-        </button>
-      </Link>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {items.map((g) => (
-          <Link key={g.id} href={`/admin/galeri/${g.id}`} className="no-underline text-inherit">
-            <div className="border rounded-lg overflow-hidden hover:shadow-lg transition">
-              {g.image_url && (
-                <img src={g.image_url} alt={g.title} className="w-full h-32 object-cover" />
-              )}
-              <div className="p-2">
-                <p className="text-sm font-semibold truncate">{g.title}</p>
-                <p className="text-xs text-gray-500">{g.category}</p>
-                <p className="text-xs">{g.published ? '✅' : '📝'}</p>
-              </div>
-            </div>
-          </Link>
-        ))}
+        </Link>
       </div>
 
-      {items.length === 0 && <p className="text-gray-500 mt-4">Belum ada foto.</p>}
-
-      <Link href="/admin" className="inline-block mt-6 text-emerald-700 hover:underline">← Balik</Link>
+      {items.length === 0 ? (
+        <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-nusra/20">
+          <p className="text-nusra-muted">Belum ada foto.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {items.map((g) => (
+            <Link key={g.id} href={`/admin/galeri/${g.id}`} className="no-underline text-inherit group">
+              <div className="bg-white rounded-2xl overflow-hidden border-2 border-gray-100 hover:border-nusra-gold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full">
+                {g.image_url && (
+                  <img src={g.image_url} alt={g.title} className="w-full h-36 object-cover" />
+                )}
+                <div className="p-3">
+                  <p className="font-bold text-sm truncate">{g.title}</p>
+                  <div className="flex items-center justify-between mt-1">
+                    {g.category && <p className="text-xs text-nusra-muted truncate">{g.category}</p>}
+                    <span className={`inline-block w-2 h-2 rounded-full flex-shrink-0 ${g.published ? 'bg-emerald-500' : 'bg-gray-300'}`}></span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </main>
   )
 }

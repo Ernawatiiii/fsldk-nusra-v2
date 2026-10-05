@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { HiOutlineLocationMarker, HiOutlineGlobeAlt } from 'react-icons/hi'
+import { FaInstagram } from 'react-icons/fa'
 
 export const revalidate = 60
 
@@ -50,9 +52,17 @@ export default async function LdkDetail({
               <h1 className="font-black text-4xl md:text-6xl uppercase leading-[0.95] mb-3">
                 {ldk.name}
               </h1>
-              <p className="text-white/70 text-lg">
+              <p className="text-white/70 text-lg flex flex-wrap items-center gap-2">
                 {ldk.campus}
-                {ldk.city && ` • 📍 ${ldk.city}`}
+                {ldk.city && (
+                  <>
+                    <span>•</span>
+                    <span className="inline-flex items-center gap-1">
+                      <HiOutlineLocationMarker className="w-4 h-4" />
+                      {ldk.city}
+                    </span>
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -86,7 +96,8 @@ export default async function LdkDetail({
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 bg-nusra text-white px-6 py-3 rounded-full font-black uppercase tracking-wider text-xs hover:bg-nusra-gold hover:text-nusra-dark transition"
                 >
-                  📷 Instagram
+                  <FaInstagram className="w-4 h-4" />
+                  Instagram
                 </a>
               )}
               {ldk.website_url && (
@@ -96,7 +107,8 @@ export default async function LdkDetail({
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 border-2 border-nusra text-nusra px-6 py-3 rounded-full font-black uppercase tracking-wider text-xs hover:bg-nusra hover:text-white transition"
                 >
-                  🌐 Website
+                  <HiOutlineGlobeAlt className="w-4 h-4" />
+                  Website
                 </a>
               )}
             </div>

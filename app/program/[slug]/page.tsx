@@ -1,13 +1,14 @@
 import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { HiOutlineCheckCircle, HiOutlineFire, HiOutlineClock } from 'react-icons/hi'
 
 export const revalidate = 60
 
 const statusLabel: Record<string, string> = {
-  'akan-datang': '🕐 Akan Datang',
-  'berlangsung': '🔥 Berlangsung',
-  'selesai': '✅ Selesai',
+  'akan-datang': 'Akan Datang',
+  'berlangsung': 'Berlangsung',
+  'selesai': 'Selesai',
 }
 
 export default async function ProgramDetail({
@@ -49,7 +50,8 @@ export default async function ProgramDetail({
 
         <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl">
           <div className="flex flex-wrap gap-3 mb-6">
-            <span className="inline-flex items-center bg-nusra-lime text-nusra-dark px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+            <span className="inline-flex items-center gap-2 bg-nusra-lime text-nusra-dark px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+              {program.status === 'selesai' ? <HiOutlineCheckCircle className="w-4 h-4" /> : program.status === 'berlangsung' ? <HiOutlineFire className="w-4 h-4" /> : <HiOutlineClock className="w-4 h-4" />}
               {statusLabel[program.status] || program.status}
             </span>
             {program.period && (

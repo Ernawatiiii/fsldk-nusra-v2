@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import { HiOutlineCalendar, HiOutlineLocationMarker } from 'react-icons/hi'
 
 export const revalidate = 60
 
@@ -24,8 +25,8 @@ export default async function Home() {
 
         <div className="relative max-w-7xl mx-auto px-6 py-24 md:py-40">
           <div className="max-w-4xl">
-            <span className="inline-block bg-nusra-lime text-nusra-dark px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-6">
-              Forum Dakwah Kampus Nusra
+            <span className="inline-block bg-nusra-gold text-nusra-dark px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-6">
+              Forum Dakwah Kampus Nusa Tenggara
             </span>
 
             <h1 className="font-black text-5xl md:text-8xl leading-[0.95] mb-8 uppercase">
@@ -134,13 +135,19 @@ export default async function Home() {
             {events.map((e) => (
               <Link key={e.id} href={`/agenda/${e.slug}`} className="no-underline text-inherit group">
                 <article className="bg-white/5 backdrop-blur border-2 border-white/10 hover:border-nusra-gold rounded-2xl p-6 transition-all duration-300 h-full">
-                  <p className="text-nusra-gold font-black text-sm uppercase tracking-wider mb-3">
-                    📅 {e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}
+                  <p className="text-nusra-gold font-black text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <HiOutlineCalendar className="w-4 h-4" />
+                    {e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}
                   </p>
                   <h3 className="font-black text-xl leading-tight mb-3 group-hover:text-nusra-gold transition">
                     {e.title}
                   </h3>
-                  {e.location && <p className="text-white/60 text-sm">📍 {e.location}</p>}
+                  {e.location && (
+                    <p className="text-white/60 text-sm flex items-center gap-2">
+                      <HiOutlineLocationMarker className="w-4 h-4" />
+                      {e.location}
+                    </p>
+                  )} 
                 </article>
               </Link>
             ))}
@@ -165,4 +172,4 @@ export default async function Home() {
       </section>
     </main>
   )
-} 
+}
