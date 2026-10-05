@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa'
 import { HiOutlineMail } from 'react-icons/hi'
+import FadeIn from '@/app/components/FadeIn'
 
 export const metadata: Metadata = {
   title: 'Media Sosial',
@@ -43,7 +44,6 @@ const socialLinks = [
 export default function MedsosPage() {
   return (
     <main>
-      {/* HEADER */}
       <section className="bg-nusra text-white py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-pattern-nusra opacity-20" />
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-nusra-gold/20 rounded-full blur-3xl" />
@@ -60,32 +60,32 @@ export default function MedsosPage() {
         </div>
       </section>
 
-      {/* LINKS */}
       <section className="max-w-2xl mx-auto px-6 py-16">
         <div className="flex flex-col">
-          {socialLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noreferrer"
-              className="group flex items-center gap-5 py-6 border-b border-nusra/10 hover:border-nusra-gold transition-colors"
-            >
-              <link.Icon className="w-6 h-6 text-nusra group-hover:text-nusra-gold transition-colors flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <div className="font-bold text-base">{link.name}</div>
-                <div className="text-sm text-nusra-muted truncate">{link.handle}</div>
-              </div>
-              <svg
-                className="w-5 h-5 text-nusra-muted group-hover:text-nusra-gold group-hover:translate-x-1 transition-all flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
+          {socialLinks.map((link, i) => (
+            <FadeIn key={link.name} delay={i * 100}>
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex items-center gap-5 py-6 border-b border-nusra/10 hover:border-nusra-gold transition-colors"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
+                <link.Icon className="w-6 h-6 text-nusra group-hover:text-nusra-gold transition-colors flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-base">{link.name}</div>
+                  <div className="text-sm text-nusra-muted truncate">{link.handle}</div>
+                </div>
+                <svg
+                  className="w-5 h-5 text-nusra-muted group-hover:text-nusra-gold group-hover:translate-x-1 transition-all flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </FadeIn>
           ))}
         </div>
       </section>

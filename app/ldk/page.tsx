@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import FadeIn from '@/app/components/FadeIn'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 
 export const metadata: Metadata = {
@@ -39,7 +40,6 @@ export default async function LdkPage({
 
   return (
     <main>
-      {/* HEADER */}
       <section className="bg-nusra text-white py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-pattern-nusra opacity-20" />
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-nusra-gold/20 rounded-full blur-3xl" />
@@ -56,7 +56,6 @@ export default async function LdkPage({
         </div>
       </section>
 
-      {/* CONTENT */}
       <section className="max-w-7xl mx-auto px-6 py-16">
         <form className="mb-12 flex gap-3 max-w-2xl" method="get">
           <input
@@ -87,34 +86,36 @@ export default async function LdkPage({
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ldks?.map((l) => (
-            <Link key={l.id} href={`/ldk/${l.slug}`} className="no-underline text-inherit group">
-              <article className="bg-white rounded-2xl p-6 border-2 border-gray-100 hover:border-nusra-gold hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex gap-5">
-                {l.logo_url ? (
-                  <img
-                    src={l.logo_url}
-                    alt={l.name}
-                    className="w-20 h-20 object-contain flex-shrink-0 rounded-xl"
-                  />
-                ) : (
-                  <div className="w-20 h-20 bg-nusra/5 rounded-xl flex items-center justify-center text-nusra/30 font-black text-xs flex-shrink-0">
-                    LOGO
+          {ldks?.map((l, i) => (
+            <FadeIn key={l.id} delay={i * 50}>
+              <Link href={`/ldk/${l.slug}`} className="no-underline text-inherit group block">
+                <article className="bg-white rounded-2xl p-6 border-2 border-gray-100 hover:border-nusra-gold hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex gap-5">
+                  {l.logo_url ? (
+                    <img
+                      src={l.logo_url}
+                      alt={l.name}
+                      className="w-20 h-20 object-contain flex-shrink-0 rounded-xl"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 bg-nusra/5 rounded-xl flex items-center justify-center text-nusra/30 font-black text-xs flex-shrink-0">
+                      LOGO
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-black text-base leading-tight mb-2 group-hover:text-nusra transition">
+                      {l.name}
+                    </h3>
+                    {l.campus && <p className="text-sm text-nusra-muted truncate">{l.campus}</p>}
+                    {l.city && (
+                      <p className="text-xs text-nusra-muted uppercase tracking-wider mt-2 flex items-center gap-1">
+                        <HiOutlineLocationMarker className="w-3 h-3" />
+                        {l.city}
+                      </p>
+                    )}
                   </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-black text-base leading-tight mb-2 group-hover:text-nusra transition">
-                    {l.name}
-                  </h3>
-                  {l.campus && <p className="text-sm text-nusra-muted truncate">{l.campus}</p>}
-                  {l.city && (
-                  <p className="text-xs text-nusra-muted uppercase tracking-wider mt-2 flex items-center gap-1">
-                    <HiOutlineLocationMarker className="w-3 h-3" />
-                    {l.city}
-                  </p>
-                 )}
-                </div>
-              </article>
-            </Link>
+                </article>
+              </Link>
+            </FadeIn>
           ))}
         </div>
 

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
+import FadeIn from '@/app/components/FadeIn'
 
 export const metadata: Metadata = {
   title: 'Galeri',
@@ -24,7 +25,6 @@ export default async function GaleriPage() {
 
   return (
     <main>
-      {/* HEADER */}
       <section className="bg-nusra text-white py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-pattern-nusra opacity-20" />
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-nusra-gold/20 rounded-full blur-3xl" />
@@ -41,7 +41,6 @@ export default async function GaleriPage() {
         </div>
       </section>
 
-      {/* CONTENT */}
       <section className="max-w-7xl mx-auto px-6 py-16">
         {items && items.length === 0 && (
           <div className="text-center py-20">
@@ -51,32 +50,33 @@ export default async function GaleriPage() {
 
         {Object.keys(grouped).map((cat) => (
           <div key={cat} className="mb-20">
-            <div className="flex items-center gap-4 mb-10">
-              <h2 className="font-black text-3xl md:text-4xl uppercase">{cat}</h2>
-              <div className="flex-1 h-0.5 bg-nusra-gold" />
-              <span className="text-xs text-nusra-muted uppercase tracking-widest font-bold">
-                {grouped[cat].length} Foto
-              </span>
-            </div>
+            <FadeIn>
+              <div className="flex items-center gap-4 mb-10">
+                <h2 className="font-black text-3xl md:text-4xl uppercase">{cat}</h2>
+                <div className="flex-1 h-0.5 bg-nusra-gold" />
+                <span className="text-xs text-nusra-muted uppercase tracking-widest font-bold">
+                  {grouped[cat].length} Foto
+                </span>
+              </div>
+            </FadeIn>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {grouped[cat].map((g) => (
-                <div
-                  key={g.id}
-                  className="group relative rounded-2xl overflow-hidden border-2 border-gray-100 hover:border-nusra-gold hover:shadow-2xl transition-all duration-300"
-                >
-                  <img
-                    src={g.image_url}
-                    alt={g.title}
-                    className="w-full h-48 md:h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-nusra-dark/90 via-nusra-dark/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                    <h3 className="font-black text-white text-sm leading-tight">{g.title}</h3>
-                    {g.description && (
-                      <p className="text-white/70 text-xs mt-1 line-clamp-2">{g.description}</p>
-                    )}
+              {grouped[cat].map((g, i) => (
+                <FadeIn key={g.id} delay={i * 50}>
+                  <div className="group relative rounded-2xl overflow-hidden border-2 border-gray-100 hover:border-nusra-gold hover:shadow-2xl transition-all duration-300">
+                    <img
+                      src={g.image_url}
+                      alt={g.title}
+                      className="w-full h-48 md:h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-nusra-dark/90 via-nusra-dark/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                      <h3 className="font-black text-white text-sm leading-tight">{g.title}</h3>
+                      {g.description && (
+                        <p className="text-white/70 text-xs mt-1 line-clamp-2">{g.description}</p>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </FadeIn>
               ))}
             </div>
           </div>

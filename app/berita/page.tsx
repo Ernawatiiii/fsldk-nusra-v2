@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import FadeIn from '@/app/components/FadeIn'
 
 export const metadata: Metadata = {
   title: 'Berita & Artikel',
@@ -38,7 +39,6 @@ export default async function BeritaPage({
 
   return (
     <main>
-      {/* HEADER */}
       <section className="bg-nusra text-white py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-pattern-nusra opacity-20" />
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-nusra-gold/20 rounded-full blur-3xl" />
@@ -55,9 +55,7 @@ export default async function BeritaPage({
         </div>
       </section>
 
-      {/* CONTENT */}
       <section className="max-w-7xl mx-auto px-6 py-16">
-        {/* SEARCH */}
         <form className="mb-12 flex gap-3 max-w-2xl" method="get">
           <input
             type="text"
@@ -86,35 +84,35 @@ export default async function BeritaPage({
           </div>
         )}
 
-        {/* GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles?.map((a) => (
-            <Link key={a.id} href={`/berita/${a.slug}`} className="no-underline text-inherit group">
-              <article className="bg-white rounded-2xl overflow-hidden border-2 border-gray-100 hover:border-nusra-gold hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
-                {a.cover_image ? (
-                  <img src={a.cover_image} alt={a.title} className="w-full h-48 object-cover" />
-                ) : (
-                  <div className="w-full h-48 bg-nusra/5 flex items-center justify-center text-nusra/30 font-black uppercase text-xs tracking-widest">
-                    Tanpa Gambar
+          {articles?.map((a, i) => (
+            <FadeIn key={a.id} delay={i * 100}>
+              <Link href={`/berita/${a.slug}`} className="no-underline text-inherit group block">
+                <article className="bg-white rounded-2xl overflow-hidden border-2 border-gray-100 hover:border-nusra-gold hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
+                  {a.cover_image ? (
+                    <img src={a.cover_image} alt={a.title} className="w-full h-48 object-cover" />
+                  ) : (
+                    <div className="w-full h-48 bg-nusra/5 flex items-center justify-center text-nusra/30 font-black uppercase text-xs tracking-widest">
+                      Tanpa Gambar
+                    </div>
+                  )}
+                  <div className="p-6 flex-1 flex flex-col">
+                    <p className="text-xs text-nusra-muted uppercase tracking-wider mb-2">
+                      {new Date(a.created_at).toLocaleDateString('id-ID', {
+                        day: 'numeric', month: 'long', year: 'numeric',
+                      })}
+                    </p>
+                    <h3 className="font-black text-lg leading-tight mb-3 group-hover:text-nusra transition">
+                      {a.title}
+                    </h3>
+                    {a.excerpt && <p className="text-sm text-nusra-muted line-clamp-3">{a.excerpt}</p>}
                   </div>
-                )}
-                <div className="p-6 flex-1 flex flex-col">
-                  <p className="text-xs text-nusra-muted uppercase tracking-wider mb-2">
-                    {new Date(a.created_at).toLocaleDateString('id-ID', {
-                      day: 'numeric', month: 'long', year: 'numeric',
-                    })}
-                  </p>
-                  <h3 className="font-black text-lg leading-tight mb-3 group-hover:text-nusra transition">
-                    {a.title}
-                  </h3>
-                  {a.excerpt && <p className="text-sm text-nusra-muted line-clamp-3">{a.excerpt}</p>}
-                </div>
-              </article>
-            </Link>
+                </article>
+              </Link>
+            </FadeIn>
           ))}
         </div>
 
-        {/* PAGINATION */}
         {totalPages > 1 && (
           <div className="flex justify-center gap-2 mt-16">
             {Array.from({ length: totalPages }).map((_, i) => {
