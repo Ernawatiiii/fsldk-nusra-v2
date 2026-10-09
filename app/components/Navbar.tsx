@@ -13,8 +13,14 @@ export default function Navbar() {
     <>
       <nav className="sticky top-0 z-50 bg-nusra/95 backdrop-blur-md text-white border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="font-black text-xl tracking-tight">
-            FSLDK <span className="text-nusra-gold">Nusra</span>
+          <Link href="/" className="flex items-center gap-3 font-black text-xl tracking-tight">
+            <img
+              src="/icon.png"
+              alt="FSLDK Nusra"
+              className="w-9 h-9 object-contain animate-logo-arrive"
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
+            <span>FSLDK <span className="text-nusra-gold">Nusra</span></span>
           </Link>
 
           {/* Desktop Menu */}
