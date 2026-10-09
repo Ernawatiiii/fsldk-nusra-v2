@@ -14,12 +14,13 @@ import {
   HiOutlinePhotograph,
   HiOutlineMail,
   HiOutlineUserGroup,
+  HiOutlineHeart,
 } from 'react-icons/hi'
 
 export default function AdminPage() {
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
-  const [stats, setStats] = useState({ artikel: 0, events: 0, ldk: 0, pesan: 0 })
+  const [stats, setStats] = useState({ artikel: 0, events: 0, ldk: 0, pesan: 0, campaign: 0 })
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -32,11 +33,12 @@ export default function AdminPage() {
       const p = await getCurrentProfile()
       setProfile(p)
 
-      const [a, e, l, m] = await Promise.all([
+      const [a, e, l, m, c] = await Promise.all([
         supabase.from('articles').select('*', { count: 'exact', head: true }),
         supabase.from('events').select('*', { count: 'exact', head: true }),
         supabase.from('ldk').select('*', { count: 'exact', head: true }),
         supabase.from('pesan').select('*', { count: 'exact', head: true }).eq('read', false),
+        supabase.from('campaigns').select('*', { count: 'exact', head: true }),
       ])
 
       setStats({
@@ -44,6 +46,7 @@ export default function AdminPage() {
         events: e.count || 0,
         ldk: l.count || 0,
         pesan: m.count || 0,
+        campaign: c.count || 0,
       })
 
       setLoading(false)
@@ -73,12 +76,12 @@ export default function AdminPage() {
     { href: '/admin/pengurus', title: 'Pengurus', desc: 'Struktur kepengurusan', Icon: HiOutlineUsers },
     { href: '/admin/program', title: 'Program', desc: 'Program kerja', Icon: HiOutlineClipboardList },
     { href: '/admin/galeri', title: 'Galeri', desc: 'Dokumentasi foto', Icon: HiOutlinePhotograph },
+    { href: '/admin/campaign', title: 'Campaign', desc: 'Campaign donasi', Icon: HiOutlineHeart, count: stats.campaign },
     { href: '/admin/pesan', title: 'Pesan', desc: 'Pesan masuk', Icon: HiOutlineMail, count: stats.pesan, highlight: stats.pesan > 0 },
   ]
 
   return (
     <main className="max-w-7xl mx-auto px-6 py-10">
-      {/* HEADER */}
       <div className="flex flex-wrap justify-between items-start gap-4 mb-10">
         <div>
           <p className="text-nusra-gold uppercase tracking-widest text-xs font-black mb-2">
@@ -112,7 +115,6 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {/* CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {cards.map((c) => (
           <Link key={c.href} href={c.href} className="no-underline text-inherit group">

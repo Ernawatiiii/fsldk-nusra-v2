@@ -32,6 +32,7 @@ export default function Navbar() {
             <Link href="/ldk" className="hover:text-nusra-gold transition">LDK</Link>
             <Link href="/pengurus" className="hover:text-nusra-gold transition">Pengurus</Link>
             <Link href="/galeri" className="hover:text-nusra-gold transition">Galeri</Link>
+            <Link href="/donasi" className="hover:text-nusra-gold transition">Donasi</Link>
             <Link href="/medsos" className="hover:text-nusra-gold transition">Medsos</Link>
           </div>
 
@@ -74,6 +75,7 @@ export default function Navbar() {
               <Link href="/ldk" onClick={() => setOpen(false)}>LDK</Link>
               <Link href="/pengurus" onClick={() => setOpen(false)}>Pengurus</Link>
               <Link href="/galeri" onClick={() => setOpen(false)}>Galeri</Link>
+              <Link href="/donasi" onClick={() => setOpen(false)}>Donasi</Link>
               <Link href="/medsos" onClick={() => setOpen(false)}>Medsos</Link>
               <Link href="/admin" onClick={() => setOpen(false)} className="text-nusra-gold">Admin</Link>
             </div>
