@@ -2,11 +2,25 @@ import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ShareButton from '@/app/components/ShareButton'
-import { HiOutlineClock, HiOutlineHeart, HiOutlineCheckCircle, HiOutlineChat, HiOutlineCreditCard } from 'react-icons/hi'
+import DonationForm from '@/app/components/DonationForm'
+import { HiOutlineClock, HiOutlineHeart, HiOutlineCheckCircle, HiOutlineChat, HiOutlineCreditCard, HiOutlineUserCircle } from 'react-icons/hi'
 
 export const revalidate = 60
 
 const BASE_URL = 'https://fsldk-nusra-v2.vercel.app'
+
+function timeAgo(date: string) {
+  const now = new Date().getTime()
+  const past = new Date(date).getTime()
+  const diff = Math.floor((now - past) / 1000)
+
+  if (diff < 60) return 'Baru saja'
+  if (diff < 3600) return `${Math.floor(diff / 60)} menit lalu`
+  if (diff < 86400) return `${Math.floor(diff / 3600)} jam lalu`
+  if (diff < 604800) return `${Math.floor(diff / 86400)} hari lalu`
+  if (diff < 2592000) return `${Math.floor(diff / 604800)} minggu lalu`
+  return new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+}
 
 export default async function CampaignDetail({
   params,
@@ -23,6 +37,14 @@ export default async function CampaignDetail({
     .single()
 
   if (!campaign) notFound()
+
+  const { data: donations } = await supabase
+    .from('donations')
+    .select('id, donor_name, message, created_at')
+    .eq('campaign_id', campaign.id)
+    .eq('status', 'approved')
+    .order('created_at', { ascending: false })
+    .limit(20)
 
   const progress = campaign.target_amount > 0
     ? Math.min(100, Math.round((campaign.collected_amount / campaign.target_amount) * 100))
@@ -137,17 +159,21 @@ export default async function CampaignDetail({
                 </pre>
               </div>
 
-              {waLink && (
-                <a
-                  href={waLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-3 bg-emerald-600 text-white px-8 py-4 rounded-full font-black uppercase tracking-wider text-sm hover:bg-emerald-700 transition-all shadow-lg"
-                >
-                  <HiOutlineChat className="w-5 h-5" />
-                  Konfirmasi via WhatsApp
-                </a>
-              )}
+              <div className="mt-4 flex flex-wrap gap-3">
+                <DonationForm campaignId={campaign.id} campaignTitle={campaign.title} />
+
+                {waLink && (
+                  <a
+                    href={waLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 border-2 border-emerald-600 text-emerald-700 px-8 py-4 rounded-full font-black uppercase tracking-wider text-sm hover:bg-emerald-600 hover:text-white transition-all"
+                  >
+                    <HiOutlineChat className="w-5 h-5" />
+                    Tanya via WhatsApp
+                  </a>
+                )}
+              </div>
             </div>
           )}
 
@@ -160,6 +186,47 @@ export default async function CampaignDetail({
               </div>
             </div>
           )}
+
+          {/* LIST DONATUR */}
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-6">
+              <h2 className="font-black text-2xl uppercase">Donatur</h2>
+              <div className="flex-1 h-0.5 bg-nusra-gold" />
+              <span className="text-xs uppercase tracking-widest text-nusra-muted font-black">
+                {donations?.length || 0} Orang
+              </span>
+            </div>
+
+            {!donations || donations.length === 0 ? (
+              <div className="bg-nusra-sand rounded-2xl p-8 text-center border-2 border-dashed border-nusra/20">
+                <HiOutlineHeart className="w-10 h-10 text-nusra/20 mx-auto mb-3" />
+                <p className="text-nusra-muted text-sm">
+                  Belum ada donatur. Jadilah yang pertama!
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col divide-y divide-gray-100">
+                {donations.map((d) => (
+                  <div key={d.id} className="py-4 flex gap-4 items-start">
+                    <div className="w-10 h-10 rounded-full bg-nusra/5 flex items-center justify-center flex-shrink-0">
+                      <HiOutlineUserCircle className="w-6 h-6 text-nusra/40" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline justify-between gap-3 flex-wrap">
+                        <p className="font-black text-sm text-nusra">{d.donor_name}</p>
+                        <p className="text-xs text-nusra-muted">{timeAgo(d.created_at)}</p>
+                      </div>
+                      {d.message && (
+                        <p className="text-sm text-nusra-muted italic mt-1 leading-relaxed">
+                          "{d.message}"
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           <div className="mt-8">
             <ShareButton

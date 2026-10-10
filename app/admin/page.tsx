@@ -15,12 +15,13 @@ import {
   HiOutlineMail,
   HiOutlineUserGroup,
   HiOutlineHeart,
+  HiOutlineCurrencyDollar,
 } from 'react-icons/hi'
 
 export default function AdminPage() {
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
-  const [stats, setStats] = useState({ artikel: 0, events: 0, ldk: 0, pesan: 0, campaign: 0 })
+  const [stats, setStats] = useState({ artikel: 0, events: 0, ldk: 0, pesan: 0, campaign: 0, donasi: 0 })
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -33,12 +34,13 @@ export default function AdminPage() {
       const p = await getCurrentProfile()
       setProfile(p)
 
-      const [a, e, l, m, c] = await Promise.all([
+      const [a, e, l, m, c, d] = await Promise.all([
         supabase.from('articles').select('*', { count: 'exact', head: true }),
         supabase.from('events').select('*', { count: 'exact', head: true }),
         supabase.from('ldk').select('*', { count: 'exact', head: true }),
         supabase.from('pesan').select('*', { count: 'exact', head: true }).eq('read', false),
         supabase.from('campaigns').select('*', { count: 'exact', head: true }),
+        supabase.from('donations').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
       ])
 
       setStats({
@@ -47,6 +49,7 @@ export default function AdminPage() {
         ldk: l.count || 0,
         pesan: m.count || 0,
         campaign: c.count || 0,
+        donasi: d.count || 0,
       })
 
       setLoading(false)
@@ -77,6 +80,7 @@ export default function AdminPage() {
     { href: '/admin/program', title: 'Program', desc: 'Program kerja', Icon: HiOutlineClipboardList },
     { href: '/admin/galeri', title: 'Galeri', desc: 'Dokumentasi foto', Icon: HiOutlinePhotograph },
     { href: '/admin/campaign', title: 'Campaign', desc: 'Campaign donasi', Icon: HiOutlineHeart, count: stats.campaign },
+    { href: '/admin/donasi', title: 'Konfirmasi Donasi', desc: 'Verifikasi donasi masuk', Icon: HiOutlineCurrencyDollar, count: stats.donasi, highlight: stats.donasi > 0 },
     { href: '/admin/pesan', title: 'Pesan', desc: 'Pesan masuk', Icon: HiOutlineMail, count: stats.pesan, highlight: stats.pesan > 0 },
   ]
 
